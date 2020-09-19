@@ -1,0 +1,34 @@
+version: '3'
+services:
+  notebook:
+    build:
+      context: ./jup_nb
+    ports:
+      - "8887:8888"
+    volumes:
+      - ./jup_nb:/home/jovyan
+    links:
+      - postgres
+    environment:
+      POSTGRES_USER: 'tokinadmin'
+      POSTGRES_PASSWORD: 'supersecret'
+      POSTGRES_DB: 'tiktokdb'
+
+  postgres:
+    container_name: "tocked_coyle"
+    build:
+      context: ./posgrs
+    restart: always
+    environment:
+      POSTGRES_USER: 'tokinadmin'
+      POSTGRES_PASSWORD: 'supersecret'
+      POSTGRES_DB: 'tiktokdb'
+      PGDATA: '/tmp'
+    ports: 
+      - "5432:5432"
+    volumes:
+      - ./posgrs:/var/lib/postgresql/data
+
+volumes:
+  posgrs:
+  jup_nb:
